@@ -72,7 +72,10 @@ class PublicUserApiTests(TestCase):
             'email': 'test@example.com',
             'password': 'test-user-password123',
         }
+        
         get_user_model().objects.create(**user_details)
+        
+        res2 = self.client.post(CREATE_USER_URL, user_details)
 
         payload = {
             'email': user_details['email'],
