@@ -20,7 +20,9 @@ class UserSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         """Create and return a user with encrypted password."""
-        return get_user_model().objects.create_user(**validated_data)
+        user = get_user_model().objects.create_user(**validated_data)
+
+        return user
 
 
 class AuthTokenSerializer(serializers.Serializer):
@@ -35,6 +37,7 @@ class AuthTokenSerializer(serializers.Serializer):
         """Validate and authenticate the user."""
         email = attrs.get('email')
         password = attrs.get('password')
+        print('usss',email,password)
         user = authenticate(
             request=self.context.get('request'),
             username=email,
