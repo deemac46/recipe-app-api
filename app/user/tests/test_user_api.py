@@ -72,16 +72,13 @@ class PublicUserApiTests(TestCase):
             'email': 'test@example.com',
             'password': 'test-user-password123',
         }
-        user = get_user_model().objects.create(**user_details)
+        get_user_model().objects.create(**user_details)
 
-        
         payload = {
-            'email': 'test@example.com',
-            'password': 'test-user-password123',
+            'email': user_details['email'],
+            'password': user_details['password'],
         }
         res = self.client.post(TOKEN_URL, payload)
-
-        print(':::::',res,user)
 
         self.assertIn('token', res.data)
         self.assertEqual(res.status_code, status.HTTP_200_OK)
@@ -95,8 +92,6 @@ class PublicUserApiTests(TestCase):
 
         payload = {'email': 'test@example.com', 'password': 'badpass'}
         res = self.client.post(TOKEN_URL, payload)
-
-        print("-->>",res,get_user_model().objects.get())
 
         self.assertNotIn('token', res.data)
         self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
